@@ -61,20 +61,16 @@ export default function Navbar() {
             >
               Poslovalnice
             </Link>
-            <button onClick={openMenu} className="md:hidden focus:outline-none">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M4 8h16M4 16h16"
-                />
-              </svg>
+            <button onClick={menuOpen ? closeMenu : openMenu} className="md:hidden focus:outline-none z-50">
+              {menuOpen ? (
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 8h16M4 16h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
@@ -86,25 +82,7 @@ export default function Navbar() {
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <button
-          onClick={closeMenu}
-          className="absolute top-8 right-8 focus:outline-none"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <div className="flex flex-col space-y-8 text-center">
+        <div className="flex flex-col space-y-8 text-center mt-16">
           {menuItems.map((item) => (
             <Link
               key={item.href}
