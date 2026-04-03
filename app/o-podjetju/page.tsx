@@ -4,6 +4,10 @@ import Navbar from "@/components/navbar";
 import PageHeader from "@/components/page-header";
 import ScrollReveal from "@/components/scroll-reveal";
 import Footer from "@/components/footer";
+import { sanityFetch } from "@/lib/sanity.live";
+import { aboutPageQuery } from "@/lib/sanity.queries";
+import type { AboutPage } from "@/lib/sanity.types";
+import PortableText from "@/components/portable-text";
 
 export const metadata: Metadata = {
   title: "O podjetju | Mesnice Fingušt",
@@ -11,7 +15,7 @@ export const metadata: Metadata = {
     "Družinsko podjetje z več kot 35-letno tradicijo mesarstva.",
 };
 
-const milestones = [
+const fallbackMilestones = [
   {
     year: "1988",
     title: "Prva mesnica",
@@ -38,21 +42,27 @@ const milestones = [
   },
 ];
 
-const stats = [
+const fallbackStats = [
   { value: "35+", label: "zaposlenih" },
   { value: "6", label: "mesnic" },
   { value: "1988", label: "ustanovljeno" },
   { value: "500+", label: "dnevnih odjemalcev" },
 ];
 
-export default function OPodjetju() {
+export default async function OPodjetjuPage() {
+  const { data: page } = (await sanityFetch({ query: aboutPageQuery })) as {
+    data: AboutPage | null;
+  };
+
+  const milestones = page?.milestones ?? fallbackMilestones;
+  const stats = page?.stats ?? fallbackStats;
   return (
     <>
       <Navbar />
 
       <PageHeader
-        title="Naša zgodba."
-        subtitle="Od leta 1988"
+        title={page?.heroTitle ?? "Naša zgodba."}
+        subtitle={page?.heroSubtitle ?? "Od leta 1988"}
         imageSrc="/images/podjetje-zgodovina.jpg"
       />
 
@@ -71,18 +81,25 @@ export default function OPodjetju() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           <ScrollReveal type="reveal-left" className="lg:col-span-5" delay={100}>
-            <p className="text-lg md:text-xl font-light text-brand-charcoal/70 leading-relaxed border-l-2 border-brand-burgundy pl-8">
-              Naša zgodba se je začela leta 1988, ko je družina Fingušt odprla
-              svojo prvo mesnico. Iz skromnih začetkov smo zrasli v
-              sodobno podjetje s šestimi lastnimi mesnicami, proizvodnim obratom
-              in več kot 35 predanimi zaposlenimi.
-            </p>
+            {page?.introText ? (
+              <PortableText
+                value={page.introText}
+                className="text-lg md:text-xl font-light text-brand-charcoal/70 leading-relaxed border-l-2 border-brand-burgundy pl-8"
+              />
+            ) : (
+              <p className="text-lg md:text-xl font-light text-brand-charcoal/70 leading-relaxed border-l-2 border-brand-burgundy pl-8">
+                Naša zgodba se je začela leta 1988, ko je družina Fingušt odprla
+                svojo prvo mesnico. Iz skromnih začetkov smo zrasli v
+                sodobno podjetje s šestimi lastnimi mesnicami, proizvodnim obratom
+                in več kot 35 predanimi zaposlenimi.
+              </p>
+            )}
           </ScrollReveal>
 
           <div className="lg:col-span-6 lg:col-start-7 space-y-0">
             {milestones.map((milestone, i) => (
               <ScrollReveal
-                key={milestone.year}
+                key={(milestone as { _key?: string })._key ?? i}
                 type="reveal-right"
                 delay={i * 150}
               >
@@ -252,7 +269,7 @@ export default function OPodjetju() {
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {stats.map((stat, i) => (
-              <ScrollReveal key={stat.label} type="reveal-scale" delay={i * 120}>
+              <ScrollReveal key={(stat as { _key?: string })._key ?? i} type="reveal-scale" delay={i * 120}>
                 <div className="text-center">
                   <span className="block text-5xl md:text-7xl lg:text-8xl font-serif text-brand-charcoal leading-none mb-3">
                     {stat.value}

@@ -20,10 +20,42 @@ export default defineConfig({
           .items([
             S.listItem()
               .title("Nastavitve")
+              .icon(() => "⚙️")
               .child(
                 S.document()
                   .schemaType("siteSettings")
                   .documentId("siteSettings")
+              ),
+            S.divider(),
+            S.listItem()
+              .title("Strani")
+              .icon(() => "📄")
+              .child(
+                S.list()
+                  .title("Strani")
+                  .items([
+                    S.listItem()
+                      .title("Domača stran")
+                      .child(
+                        S.document()
+                          .schemaType("homePage")
+                          .documentId("homePage")
+                      ),
+                    S.listItem()
+                      .title("O podjetju")
+                      .child(
+                        S.document()
+                          .schemaType("aboutPage")
+                          .documentId("aboutPage")
+                      ),
+                    S.listItem()
+                      .title("Kakovost")
+                      .child(
+                        S.document()
+                          .schemaType("qualityPage")
+                          .documentId("qualityPage")
+                      ),
+                  ])
               ),
             S.divider(),
             S.documentTypeListItem("productCategory").title(
@@ -39,6 +71,8 @@ export default defineConfig({
     visionTool(),
     presentationTool({
       previewUrl: {
+        origin:
+          typeof window !== "undefined" ? window.location.origin : "http://localhost:3100",
         previewMode: {
           enable: "/api/draft-mode/enable",
         },

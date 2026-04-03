@@ -3,6 +3,10 @@ import Navbar from "@/components/navbar";
 import PageHeader from "@/components/page-header";
 import ScrollReveal from "@/components/scroll-reveal";
 import Footer from "@/components/footer";
+import { sanityFetch } from "@/lib/sanity.live";
+import { qualityPageQuery } from "@/lib/sanity.queries";
+import type { QualityPage } from "@/lib/sanity.types";
+import PortableText from "@/components/portable-text";
 
 export const metadata = {
   title: "Kakovost | Mesnice Fingušt",
@@ -10,7 +14,7 @@ export const metadata = {
     "Zagotavljamo najvišje standarde varnosti in kakovosti z IFS in HACCP certifikati.",
 };
 
-const certificates = [
+const fallbackCertificates = [
   "2012/13",
   "2014/15",
   "2015/16",
@@ -20,14 +24,20 @@ const certificates = [
   "2019/20",
 ];
 
-export default function KakovostPage() {
+export default async function KakovostPage() {
+  const { data: page } = (await sanityFetch({ query: qualityPageQuery })) as {
+    data: QualityPage | null;
+  };
+
+  const certificates = page?.certificates ?? fallbackCertificates.map((c) => ({ period: c, name: "IFS" }));
+
   return (
     <>
       <Navbar />
 
       <PageHeader
-        title="Kakovost brez kompromisov."
-        subtitle="Standardi odličnosti"
+        title={page?.heroTitle ?? "Kakovost brez kompromisov."}
+        subtitle={page?.heroSubtitle ?? "Standardi odličnosti"}
         imageSrc="/images/kakovost-facility.jpg"
       />
 
@@ -35,12 +45,19 @@ export default function KakovostPage() {
       <section className="py-24 md:py-32 px-6 md:px-12 max-w-screen-2xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           <ScrollReveal className="lg:col-span-7">
-            <p className="text-2xl md:text-3xl lg:text-4xl font-serif leading-snug text-brand-charcoal">
-              Pri Finguštu verjamemo, da je kakovost obljuba &mdash; ne le
-              beseda. Vsak kos mesa, vsak izdelek, ki zapusti naše obrate, nosi
-              pečat doslednega nadzora, preverjenega izvora in neomajne
-              predanosti tradiciji.
-            </p>
+            {page?.introText ? (
+              <PortableText
+                value={page.introText}
+                className="text-2xl md:text-3xl lg:text-4xl font-serif leading-snug text-brand-charcoal"
+              />
+            ) : (
+              <p className="text-2xl md:text-3xl lg:text-4xl font-serif leading-snug text-brand-charcoal">
+                Pri Finguštu verjamemo, da je kakovost obljuba &mdash; ne le
+                beseda. Vsak kos mesa, vsak izdelek, ki zapusti naše obrate, nosi
+                pečat doslednega nadzora, preverjenega izvora in neomajne
+                predanosti tradiciji.
+              </p>
+            )}
           </ScrollReveal>
           <ScrollReveal
             type="reveal-left"
@@ -79,25 +96,34 @@ export default function KakovostPage() {
                   01
                 </span>
                 <h3 className="text-3xl md:text-4xl font-serif mb-6">
-                  HACCP sistem
+                  {page?.haccpTitle ?? "HACCP sistem"}
                 </h3>
-                <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
-                  HACCP (Hazard Analysis and Critical Control Points) je
-                  sistematičen preventivni pristop k varnosti živil, ki
-                  identificira in nadzoruje biološke, kemijske in fizikalne
-                  nevarnosti v celotnem proizvodnem procesu.
-                </p>
-                <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
-                  V naših obratih smo HACCP sistem vzpostavili od samega začetka.
-                  Vsaka faza &mdash; od sprejema surovin, preko predelave in
-                  zorenja, do pakiranja &mdash; je nadzorovana z natančno
-                  določenimi kritičnimi kontrolnimi točkami.
-                </p>
-                <p className="text-brand-cream/70 font-light leading-relaxed">
-                  To pomeni, da morebitna tveganja prepoznamo in odpravimo,
-                  preden bi lahko vplivala na končni izdelek. Za naše kupce to
-                  pomeni popolno varnost vsakega grižljaja.
-                </p>
+                {page?.haccpDescription ? (
+                  <PortableText
+                    value={page.haccpDescription}
+                    className="text-brand-cream/70 font-light leading-relaxed"
+                  />
+                ) : (
+                  <>
+                    <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
+                      HACCP (Hazard Analysis and Critical Control Points) je
+                      sistematičen preventivni pristop k varnosti živil, ki
+                      identificira in nadzoruje biološke, kemijske in fizikalne
+                      nevarnosti v celotnem proizvodnem procesu.
+                    </p>
+                    <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
+                      V naših obratih smo HACCP sistem vzpostavili od samega začetka.
+                      Vsaka faza &mdash; od sprejema surovin, preko predelave in
+                      zorenja, do pakiranja &mdash; je nadzorovana z natančno
+                      določenimi kritičnimi kontrolnimi točkami.
+                    </p>
+                    <p className="text-brand-cream/70 font-light leading-relaxed">
+                      To pomeni, da morebitna tveganja prepoznamo in odpravimo,
+                      preden bi lahko vplivala na končni izdelek. Za naše kupce to
+                      pomeni popolno varnost vsakega grižljaja.
+                    </p>
+                  </>
+                )}
               </div>
             </ScrollReveal>
 
@@ -108,25 +134,34 @@ export default function KakovostPage() {
                   02
                 </span>
                 <h3 className="text-3xl md:text-4xl font-serif mb-6">
-                  IFS standard
+                  {page?.ifsTitle ?? "IFS standard"}
                 </h3>
-                <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
-                  IFS Food (International Featured Standards) je mednarodno
-                  priznan standard za presojo kakovosti in varnosti živilskih
-                  proizvajalcev. Certificiranje IFS na višji ravni pomeni, da
-                  naši procesi presegajo osnovna zakonska pričakovanja.
-                </p>
-                <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
-                  Presoja zajema vse &mdash; od higiene prostorov, usposobljenosti
-                  zaposlenih in upravljanja alergeniov, do sledljivosti surovin in
-                  učinkovitosti korektivnih ukrepov. Vsako leto se podvržemo
-                  neodvisni zunanji presoji.
-                </p>
-                <p className="text-brand-cream/70 font-light leading-relaxed">
-                  Certifikat IFS na višji ravni je dokaz, da naša proizvodnja
-                  dosega standarde, ki jih zahtevajo največje evropske
-                  maloprodajne verige.
-                </p>
+                {page?.ifsDescription ? (
+                  <PortableText
+                    value={page.ifsDescription}
+                    className="text-brand-cream/70 font-light leading-relaxed"
+                  />
+                ) : (
+                  <>
+                    <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
+                      IFS Food (International Featured Standards) je mednarodno
+                      priznan standard za presojo kakovosti in varnosti živilskih
+                      proizvajalcev. Certificiranje IFS na višji ravni pomeni, da
+                      naši procesi presegajo osnovna zakonska pričakovanja.
+                    </p>
+                    <p className="text-brand-cream/70 font-light leading-relaxed mb-6">
+                      Presoja zajema vse &mdash; od higiene prostorov, usposobljenosti
+                      zaposlenih in upravljanja alergeniov, do sledljivosti surovin in
+                      učinkovitosti korektivnih ukrepov. Vsako leto se podvržemo
+                      neodvisni zunanji presoji.
+                    </p>
+                    <p className="text-brand-cream/70 font-light leading-relaxed">
+                      Certifikat IFS na višji ravni je dokaz, da naša proizvodnja
+                      dosega standarde, ki jih zahtevajo največje evropske
+                      maloprodajne verige.
+                    </p>
+                  </>
+                )}
               </div>
             </ScrollReveal>
           </div>
@@ -151,12 +186,12 @@ export default function KakovostPage() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {certificates.map((cert, i) => (
-            <ScrollReveal key={cert} type="reveal-scale" delay={i * 80}>
+            <ScrollReveal key={cert.period} type="reveal-scale" delay={i * 80}>
               <div className="bg-brand-charcoal text-brand-cream rounded-sm p-6 md:p-8 text-center group hover:bg-brand-burgundy transition-colors duration-500">
                 <p className="text-xs tracking-[0.2em] uppercase text-brand-sand group-hover:text-brand-cream/80 mb-3 transition-colors duration-500">
-                  IFS
+                  {cert.name ?? "IFS"}
                 </p>
-                <p className="text-2xl md:text-3xl font-serif">{cert}</p>
+                <p className="text-2xl md:text-3xl font-serif">{cert.period}</p>
                 <div className="mt-4 w-8 h-[1px] bg-brand-cream/20 group-hover:bg-brand-cream/40 mx-auto transition-colors duration-500" />
                 <p className="text-xs text-brand-cream/50 group-hover:text-brand-cream/70 mt-3 tracking-wide transition-colors duration-500">
                   Višja raven
@@ -180,18 +215,27 @@ export default function KakovostPage() {
                 <br />
                 <span className="italic text-brand-burgundy">vaše mize</span>.
               </h2>
-              <p className="text-brand-charcoal/70 font-light text-lg leading-relaxed mb-6">
-                Veterinarski nadzor je prisoten v vseh fazah naše proizvodnje.
-                Usposobljeni veterinarji redno pregledujejo surovine, spremljajo
-                proizvodne procese in potrjujejo, da vsak izdelek izpolnjuje
-                najstrožje zdravstvene zahteve.
-              </p>
-              <p className="text-brand-charcoal/70 font-light text-lg leading-relaxed mb-8">
-                Notranje kontrole, ki sledijo načelom HACCP sistema in IFS
-                standarda, zagotavljajo varnost, kakovost in sledljivost mesa
-                ter mesnih izdelkov. Vsak kos mesa je sledljiv od kmetije izvora
-                do prodajne police &mdash; brez izjem.
-              </p>
+              {page?.traceabilityText ? (
+                <PortableText
+                  value={page.traceabilityText}
+                  className="text-brand-charcoal/70 font-light text-lg leading-relaxed mb-8"
+                />
+              ) : (
+                <>
+                  <p className="text-brand-charcoal/70 font-light text-lg leading-relaxed mb-6">
+                    Veterinarski nadzor je prisoten v vseh fazah naše proizvodnje.
+                    Usposobljeni veterinarji redno pregledujejo surovine, spremljajo
+                    proizvodne procese in potrjujejo, da vsak izdelek izpolnjuje
+                    najstrožje zdravstvene zahteve.
+                  </p>
+                  <p className="text-brand-charcoal/70 font-light text-lg leading-relaxed mb-8">
+                    Notranje kontrole, ki sledijo načelom HACCP sistema in IFS
+                    standarda, zagotavljajo varnost, kakovost in sledljivost mesa
+                    ter mesnih izdelkov. Vsak kos mesa je sledljiv od kmetije izvora
+                    do prodajne police &mdash; brez izjem.
+                  </p>
+                </>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-brand-charcoal/10 pt-8">
                 <div>
                   <p className="text-3xl font-serif text-brand-burgundy mb-1">

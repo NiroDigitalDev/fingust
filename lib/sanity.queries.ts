@@ -66,3 +66,59 @@ export const siteSettingsQuery = defineQuery(`
     aboutText
   }
 `);
+
+export const homePageQuery = defineQuery(`
+  *[_id == "homePage"][0] {
+    heroTitle,
+    heroTitleAccent,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    featuredProducts[] {
+      title,
+      description,
+      "imageUrl": image.asset->url
+    },
+    aboutTitle,
+    aboutText,
+    "aboutImageUrl": aboutImage.asset->url
+  }
+`);
+
+export const aboutPageQuery = defineQuery(`
+  *[_id == "aboutPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    introText,
+    milestones[] {
+      year,
+      title,
+      description
+    },
+    "teamImageUrl": teamImage.asset->url,
+    "deliveryImageUrl": deliveryImage.asset->url,
+    stats[] {
+      value,
+      label
+    }
+  }
+`);
+
+export const qualityPageQuery = defineQuery(`
+  *[_id == "qualityPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    introText,
+    haccpTitle,
+    haccpDescription,
+    ifsTitle,
+    ifsDescription,
+    certificates[] {
+      period,
+      name
+    },
+    traceabilityText,
+    "inspectionImageUrl": inspectionImage.asset->url
+  }
+`);

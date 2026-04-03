@@ -4,12 +4,36 @@ import ScrollReveal from "@/components/scroll-reveal";
 import ContactForm from "@/components/contact-form";
 import ParallaxBg from "@/components/parallax-bg";
 import Footer from "@/components/footer";
+import { sanityFetch } from "@/lib/sanity.live";
+import { homePageQuery, siteSettingsQuery } from "@/lib/sanity.queries";
+import type { HomePage, SiteSettings } from "@/lib/sanity.types";
 
 const awards = [
   "AAA Odličnost",
   "Agra 2018 Nagrade",
   "Eko Meso Certifikat",
   "Sklad za razvoj podeželja",
+];
+
+const defaultProducts = [
+  {
+    title: "Sveže meso",
+    description:
+      "Vrhunsko lokalno meso, pridelano na naraven način. Naša govedina, svinjina in perutnina so skrbno izbrane za popoln okus na vaši mizi.",
+    imageUrl: "/images/sveze-meso.jpg",
+  },
+  {
+    title: "Suhomesnato",
+    description:
+      "Nagrajene salame, klobase in pršuti, ki zorijo z navdihom narave. Ustvarjeno po starih družinskih recepturah za trenutke, ki se jih spominjamo.",
+    imageUrl: "/images/suhomesnato.jpg",
+  },
+  {
+    title: "Žar Program",
+    description:
+      "Specialitete, zasnovane za ogenj. Od sočnih čevapčičev do skrbno mariniranih kosov za vrhunske kulinarične dogodke na prostem.",
+    imageUrl: "/images/zar-program.jpg",
+  },
 ];
 
 function ArrowIcon() {
@@ -30,7 +54,34 @@ function ArrowIcon() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const { data: page } = (await sanityFetch({ query: homePageQuery })) as {
+    data: HomePage | null;
+  };
+  const { data: settings } = (await sanityFetch({
+    query: siteSettingsQuery,
+  })) as { data: SiteSettings | null };
+
+  const heroTitle = page?.heroTitle ?? "Čista";
+  const heroTitleAccent = page?.heroTitleAccent ?? "tradicija.";
+  const heroSubtitle =
+    page?.heroSubtitle ??
+    "Skrbno izbrano, varno in visoko kakovostno domače slovensko meso, obdelano z ljubeznijo od leta 2013.";
+  const companyName = settings?.companyName ?? "Mesnine štajerske d.o.o.";
+  const heroImageUrl =
+    page?.heroImageUrl ??
+    "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=2000&q=80";
+
+  const products =
+    page?.featuredProducts && page.featuredProducts.length > 0
+      ? page.featuredProducts
+      : defaultProducts;
+
+  const aboutTitle = page?.aboutTitle ?? "Ponosni na našo";
+  const aboutText =
+    settings?.aboutText ??
+    "";
+
   return (
     <>
       <Navbar />
@@ -39,7 +90,7 @@ export default function Home() {
       <header className="relative min-h-screen flex items-center pt-24 pb-12 px-6 md:px-12 bg-brand-charcoal text-brand-cream overflow-hidden">
         <ParallaxBg>
           <Image
-            src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=2000&q=80"
+            src={heroImageUrl}
             alt="Butchery Art"
             fill
             className="object-cover opacity-40"
@@ -54,17 +105,17 @@ export default function Home() {
             <div className="md:col-span-8">
               <ScrollReveal>
                 <p className="text-brand-sand tracking-[0.3em] uppercase text-xs mb-6 font-medium">
-                  Mesnine štajerske d.o.o.
+                  {companyName}
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={150}>
                 <h1 className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-serif mb-4">
-                  Čista
+                  {heroTitle}
                 </h1>
               </ScrollReveal>
               <ScrollReveal delay={300}>
                 <h1 className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-serif mb-4 italic text-brand-burgundy">
-                  tradicija.
+                  {heroTitleAccent}
                 </h1>
               </ScrollReveal>
             </div>
@@ -74,8 +125,7 @@ export default function Home() {
               delay={500}
             >
               <p className="text-lg md:text-xl font-light text-brand-sand/80 max-w-md border-l border-brand-burgundy pl-6">
-                Skrbno izbrano, varno in visoko kakovostno domače slovensko
-                meso, obdelano z ljubeznijo od leta 2013.
+                {heroSubtitle}
               </p>
             </ScrollReveal>
           </div>
@@ -118,111 +168,132 @@ export default function Home() {
         </ScrollReveal>
 
         <div className="space-y-32">
-          {/* Product 1 — text left, image right */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <ScrollReveal
-              type="reveal-left"
-              className="md:col-span-5 md:col-start-2 order-2 md:order-1"
-            >
-              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
-                01
-              </span>
-              <h3 className="text-4xl font-serif mb-6">Sveže meso</h3>
-              <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
-                Vrhunsko lokalno meso, pridelano na naraven način. Naša
-                govedina, svinjina in perutnina so skrbno izbrane za popoln okus
-                na vaši mizi.
-              </p>
-              <a
-                href="#kontakt"
-                className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
-              >
-                Odkrijte več
-                <ArrowIcon />
-              </a>
-            </ScrollReveal>
-            <ScrollReveal
-              type="reveal-right"
-              className="md:col-span-6 order-1 md:order-2"
-              delay={200}
-            >
-              <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
-                <Image
-                  src="/images/sveze-meso.jpg"
-                  alt="Sveže meso"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover hover:scale-105 transition-transform duration-1000"
-                />
-              </div>
-            </ScrollReveal>
-          </div>
+          {products.map((product, index) => {
+            const number = String(index + 1).padStart(2, "0");
+            const imageSrc =
+              product.imageUrl ?? defaultProducts[index]?.imageUrl ?? "/images/sveze-meso.jpg";
 
-          {/* Product 2 — image left, text right */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <ScrollReveal
-              type="reveal-left"
-              className="md:col-span-6"
-              delay={100}
-            >
-              <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
-                <Image
-                  src="/images/suhomesnato.jpg"
-                  alt="Suhomesnati izdelki"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover hover:scale-105 transition-transform duration-1000"
-                />
-              </div>
-            </ScrollReveal>
-            <ScrollReveal
-              type="reveal-right"
-              className="md:col-span-5 md:col-start-8"
-              delay={300}
-            >
-              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
-                02
-              </span>
-              <h3 className="text-4xl font-serif mb-6">Suhomesnato</h3>
-              <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
-                Nagrajene salame, klobase in pršuti, ki zorijo z navdihom
-                narave. Ustvarjeno po starih družinskih recepturah za trenutke,
-                ki se jih spominjamo.
-              </p>
-              <a
-                href="#kontakt"
-                className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
-              >
-                Odkrijte več
-                <ArrowIcon />
-              </a>
-            </ScrollReveal>
-          </div>
+            // Product layout 1 — text left, image right
+            if (index % 3 === 0) {
+              return (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center"
+                >
+                  <ScrollReveal
+                    type="reveal-left"
+                    className="md:col-span-5 md:col-start-2 order-2 md:order-1"
+                  >
+                    <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                      {number}
+                    </span>
+                    <h3 className="text-4xl font-serif mb-6">
+                      {product.title}
+                    </h3>
+                    <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
+                      {product.description}
+                    </p>
+                    <a
+                      href="#kontakt"
+                      className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
+                    >
+                      Odkrijte več
+                      <ArrowIcon />
+                    </a>
+                  </ScrollReveal>
+                  <ScrollReveal
+                    type="reveal-right"
+                    className="md:col-span-6 order-1 md:order-2"
+                    delay={200}
+                  >
+                    <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
+                      <Image
+                        src={imageSrc}
+                        alt={product.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover hover:scale-105 transition-transform duration-1000"
+                      />
+                    </div>
+                  </ScrollReveal>
+                </div>
+              );
+            }
 
-          {/* Product 3 — center feature */}
-          <div>
-            <ScrollReveal className="text-center mb-12">
-              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
-                03
-              </span>
-              <h3 className="text-4xl font-serif mb-4">Žar Program</h3>
-              <p className="text-brand-charcoal/70 font-light text-lg max-w-xl mx-auto">
-                Specialitete, zasnovane za ogenj. Od sočnih čevapčičev do skrbno
-                mariniranih kosov za vrhunske kulinarične dogodke na prostem.
-              </p>
-            </ScrollReveal>
-            <ScrollReveal type="reveal-scale" delay={150}>
-              <div className="w-full aspect-video md:aspect-[21/9] overflow-hidden max-w-6xl mx-auto relative rounded-sm">
-                <Image
-                  src="/images/zar-program.jpg"
-                  alt="Žar"
-                  fill
-                  sizes="100vw"
-                  className="object-cover hover:scale-105 transition-transform duration-1000"
-                />
+            // Product layout 2 — image left, text right
+            if (index % 3 === 1) {
+              return (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center"
+                >
+                  <ScrollReveal
+                    type="reveal-left"
+                    className="md:col-span-6"
+                    delay={100}
+                  >
+                    <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
+                      <Image
+                        src={imageSrc}
+                        alt={product.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover hover:scale-105 transition-transform duration-1000"
+                      />
+                    </div>
+                  </ScrollReveal>
+                  <ScrollReveal
+                    type="reveal-right"
+                    className="md:col-span-5 md:col-start-8"
+                    delay={300}
+                  >
+                    <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                      {number}
+                    </span>
+                    <h3 className="text-4xl font-serif mb-6">
+                      {product.title}
+                    </h3>
+                    <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
+                      {product.description}
+                    </p>
+                    <a
+                      href="#kontakt"
+                      className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
+                    >
+                      Odkrijte več
+                      <ArrowIcon />
+                    </a>
+                  </ScrollReveal>
+                </div>
+              );
+            }
+
+            // Product layout 3 — center feature
+            return (
+              <div key={index}>
+                <ScrollReveal className="text-center mb-12">
+                  <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                    {number}
+                  </span>
+                  <h3 className="text-4xl font-serif mb-4">{product.title}</h3>
+                  <p className="text-brand-charcoal/70 font-light text-lg max-w-xl mx-auto">
+                    {product.description}
+                  </p>
+                </ScrollReveal>
+                <ScrollReveal type="reveal-scale" delay={150}>
+                  <div className="w-full aspect-video md:aspect-[21/9] overflow-hidden max-w-6xl mx-auto relative rounded-sm">
+                    <Image
+                      src={imageSrc}
+                      alt={product.title}
+                      fill
+                      sizes="100vw"
+                      className="object-cover hover:scale-105 transition-transform duration-1000"
+                    />
+                  </div>
+                </ScrollReveal>
               </div>
-            </ScrollReveal>
-          </div>
+            );
+          })}
         </div>
       </section>
 
@@ -236,7 +307,7 @@ export default function Home() {
             <div className="lg:col-span-7">
               <ScrollReveal>
                 <h2 className="text-5xl md:text-7xl font-serif leading-tight mb-12">
-                  Ponosni na našo <br />
+                  {aboutTitle} <br />
                   <span className="italic text-brand-burgundy">kakovost</span>.
                 </h2>
               </ScrollReveal>
@@ -247,9 +318,8 @@ export default function Home() {
                       Inovacija
                     </h4>
                     <p className="font-light text-brand-cream/70 leading-relaxed text-sm">
-                      Z uspešno rekonstrukcijo objektov in nabavo posodobljene
-                      tehnološke opreme zagotavljamo najvišje standarde varnosti
-                      in higiene.
+                      {aboutText ||
+                        "Z uspešno rekonstrukcijo objektov in nabavo posodobljene tehnološke opreme zagotavljamo najvišje standarde varnosti in higiene."}
                     </p>
                   </div>
                   <div>
@@ -269,7 +339,7 @@ export default function Home() {
               <ScrollReveal type="reveal-right">
                 <div className="aspect-[3/4] overflow-hidden relative">
                   <Image
-                    src="/images/butcher-portrait.jpg"
+                    src={page?.aboutImageUrl ?? "/images/butcher-portrait.jpg"}
                     alt="Butcher portrait"
                     fill
                     sizes="(max-width: 1024px) 100vw, 33vw"
