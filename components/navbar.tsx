@@ -34,7 +34,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed w-full z-50 transition-all duration-500 py-6 px-6 md:px-12 mix-blend-difference text-white">
+      <nav className={`fixed w-full z-50 transition-all duration-500 py-6 px-6 md:px-12 text-white ${menuOpen ? "" : "mix-blend-difference"}`}>
         <div className="flex justify-between items-center">
           <Link href="/" className="shrink-0 cursor-pointer">
             <span className="font-serif font-bold text-2xl tracking-widest uppercase">
@@ -82,7 +82,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-brand-charcoal z-40 flex flex-col justify-center items-center text-white transform transition-transform duration-500 ${
+        className={`fixed inset-0 bg-brand-charcoal z-[45] flex flex-col justify-center items-center text-white transform transition-transform duration-500 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
