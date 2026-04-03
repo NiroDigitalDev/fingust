@@ -83,7 +83,7 @@ export default function Home() {
       </header>
 
       {/* ── Marquee Awards Bar ── */}
-      <section className="bg-brand-burgundy text-brand-cream py-5 border-y border-brand-charcoal relative z-20">
+      <section className="bg-brand-burgundy text-brand-cream py-5 border-y border-brand-charcoal relative z-20 overflow-hidden">
         <div className="marquee-wrapper">
           {[0, 1].map((i) => (
             <div
@@ -229,7 +229,7 @@ export default function Home() {
       {/* ── About / Quality ── */}
       <section
         id="kakovost"
-        className="py-32 bg-brand-charcoal text-brand-cream relative"
+        className="py-32 bg-brand-charcoal text-brand-cream relative overflow-hidden"
       >
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -278,7 +278,7 @@ export default function Home() {
                 </div>
               </ScrollReveal>
               <ScrollReveal type="reveal-rotate" delay={600}>
-                <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-brand-burgundy rounded-full flex items-center justify-center p-4 text-center shadow-2xl">
+                <div className="absolute -bottom-4 left-2 md:-bottom-8 md:-left-8 w-32 h-32 md:w-40 md:h-40 bg-brand-burgundy rounded-full flex items-center justify-center p-4 text-center shadow-2xl">
                   <p className="font-serif text-sm italic leading-tight">
                     Evropa <br />
                     investira v <br />

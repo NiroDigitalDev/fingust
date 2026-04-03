@@ -18,7 +18,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex space-x-16">
+          <div className="flex space-x-10 md:space-x-16">
             <div>
               <h4 className="text-xs tracking-[0.2em] uppercase font-bold text-brand-sand mb-6">
                 Navigacija
@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
       </ScrollReveal>
 
-      <div className="w-full flex justify-center items-center mb-8 select-none">
+      <div className="w-full flex justify-center items-center mb-8 select-none overflow-hidden">
         <h2 className="text-[15vw] leading-none font-serif font-black tracking-tighter opacity-10">
           FINGUŠT.
         </h2>
