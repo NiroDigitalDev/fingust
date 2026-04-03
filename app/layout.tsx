@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit, Playfair_Display } from "next/font/google";
+import { VisualEditing } from "next-sanity/visual-editing";
+import { draftMode } from "next/headers";
+import { SanityLive } from "@/lib/sanity.live";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -21,11 +24,13 @@ export const metadata: Metadata = {
     "Mesnice Fingušt - Mesnine štajerske d.o.o. Nudimo sveže domače meso, suhomesnate izdelke in žar program z garancijo kakovosti.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isDraftMode = (await draftMode()).isEnabled;
+
   return (
     <html
       lang="sl"
@@ -33,6 +38,8 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased selection:bg-brand-burgundy selection:text-white">
         {children}
+        {isDraftMode && <VisualEditing />}
+        <SanityLive />
       </body>
     </html>
   );

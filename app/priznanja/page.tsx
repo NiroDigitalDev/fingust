@@ -4,54 +4,14 @@ import PageHeader from "@/components/page-header";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ScrollReveal from "@/components/scroll-reveal";
+import { sanityFetch } from "@/lib/sanity.live";
+import { awardsQuery } from "@/lib/sanity.queries";
+import type { Award } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
   title: "Priznanja in nagrade | Mesnice Fingušt",
   description: "Naša priznanja in nagrade za kakovost mesnih izdelkov.",
 };
-
-const agraTimeline = [
-  {
-    year: "2020",
-    title: "AGRA Gornja Radgona",
-    medals: "2 zlati, 1 srebrna",
-    total: 3,
-    description:
-      "Zlato odličje za Kolesarsko klobaso in Kranjsko klobaso. Srebrno priznanje za domačo salamo z orehi.",
-  },
-  {
-    year: "2019",
-    title: "AGRA Gornja Radgona",
-    medals: "3 zlate, 2 srebrni",
-    total: 5,
-    description:
-      "Rekordno leto z zlatimi priznanji za Pol!sebno klobaso, Kolesarsko klobaso in Štajersko tlačenko. Srebrni medalji za hrenovke in čajno salamo.",
-  },
-  {
-    year: "2018",
-    title: "AGRA Gornja Radgona",
-    medals: "2 zlati, 2 srebrni, 1 bronasta",
-    total: 5,
-    description:
-      "Zlati medalji za Kolesarsko in Pol!sebno klobaso. Srebrni priznanji za pečenico in krvavico. Bronasta za domači pršut.",
-  },
-  {
-    year: "2017",
-    title: "AGRA Gornja Radgona",
-    medals: "1 zlata, 3 srebrne, 2 bronasti",
-    total: 6,
-    description:
-      "Zlata medalja za Kolesarsko klobaso. Srebrna priznanja za klobaso z jurčki, zaseko in domačo salamo. Bronasti medalji za šunko in svinjski vrat.",
-  },
-  {
-    year: "2015",
-    title: "AGRA Gornja Radgona",
-    medals: "4 zlate, 5 srebrnih, 2 bronasti",
-    total: 11,
-    description:
-      "Naš najuspešnejši nastop — 11 medalj za mesne izdelke. Zlata odličja za Kolesarsko klobaso, Pol!sebno klobaso, domačo salamo in Štajersko tlačenko.",
-  },
-];
 
 function MedalIcon({ type }: { type: "gold" | "silver" | "bronze" }) {
   const colors = {
@@ -78,8 +38,23 @@ function StarIcon() {
   );
 }
 
-export default function PriznanjaPage() {
-  const totalMedals = agraTimeline.reduce((sum, item) => sum + item.total, 0);
+function formatMedals(gold: number, silver: number, bronze: number): string {
+  const parts: string[] = [];
+  if (gold > 0) parts.push(`${gold} zlat${gold === 1 ? "a" : gold === 2 ? "i" : gold < 5 ? "e" : "ih"}`);
+  if (silver > 0) parts.push(`${silver} srebrn${silver === 1 ? "a" : silver === 2 ? "i" : silver < 5 ? "e" : "ih"}`);
+  if (bronze > 0) parts.push(`${bronze} bronast${bronze === 1 ? "a" : bronze === 2 ? "i" : bronze < 5 ? "e" : "ih"}`);
+  return parts.join(", ");
+}
+
+export default async function PriznanjaPage() {
+  const { data: awards } = (await sanityFetch({ query: awardsQuery })) as { data: Award[] };
+
+  const totalMedals = awards.reduce(
+    (sum, a) => sum + (a.goldMedals || 0) + (a.silverMedals || 0) + (a.bronzeMedals || 0),
+    0,
+  );
+  const agraAwards = awards.filter((a) => a.event === "AGRA");
+  const otherAwards = awards.filter((a) => a.event !== "AGRA");
 
   return (
     <>
@@ -104,7 +79,7 @@ export default function PriznanjaPage() {
               </p>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p className="text-4xl md:text-5xl font-serif font-bold">5</p>
+              <p className="text-4xl md:text-5xl font-serif font-bold">{agraAwards.length}</p>
               <p className="text-xs tracking-[0.2em] uppercase mt-2 text-brand-sand/80">
                 Let AGRA
               </p>
@@ -260,12 +235,17 @@ export default function PriznanjaPage() {
             <div className="absolute left-6 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-brand-cream/15" />
 
             <div className="space-y-24">
-              {agraTimeline.map((item, index) => {
+              {agraAwards.map((item, index) => {
                 const isLeft = index % 2 === 0;
+                const gold = item.goldMedals || 0;
+                const silver = item.silverMedals || 0;
+                const bronze = item.bronzeMedals || 0;
+                const total = gold + silver + bronze;
+                const yearStr = String(item.year);
 
                 return (
                   <ScrollReveal
-                    key={item.year}
+                    key={item._id}
                     type={isLeft ? "reveal-left" : "reveal-right"}
                     delay={index * 100}
                   >
@@ -277,7 +257,7 @@ export default function PriznanjaPage() {
                       {/* Year badge — centered on line */}
                       <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-12 h-12 bg-brand-burgundy rounded-full flex items-center justify-center z-10 shadow-lg shadow-brand-burgundy/30">
                         <span className="text-xs font-bold tracking-wider">
-                          {item.year.slice(2)}
+                          {yearStr.slice(2)}
                         </span>
                       </div>
 
@@ -291,7 +271,7 @@ export default function PriznanjaPage() {
                         style={{ direction: "ltr" }}
                       >
                         <p className="text-7xl md:text-9xl font-serif font-bold text-brand-cream/5 leading-none mb-2">
-                          {item.year}
+                          {yearStr}
                         </p>
                         <h3 className="text-2xl font-serif mb-3 -mt-10 md:-mt-14 relative z-10">
                           {item.title}
@@ -302,11 +282,11 @@ export default function PriznanjaPage() {
                               isLeft ? "md:justify-end md:w-full" : ""
                             }`}
                           >
-                            <MedalIcon type="gold" />
-                            <MedalIcon type="silver" />
-                            <MedalIcon type="bronze" />
+                            {gold > 0 && <MedalIcon type="gold" />}
+                            {silver > 0 && <MedalIcon type="silver" />}
+                            {bronze > 0 && <MedalIcon type="bronze" />}
                             <span className="text-sm text-brand-sand/70 ml-1">
-                              {item.medals}
+                              {formatMedals(gold, silver, bronze)}
                             </span>
                           </div>
                         </div>
@@ -314,7 +294,7 @@ export default function PriznanjaPage() {
                           {item.description}
                         </p>
                         <p className="text-xs tracking-[0.15em] uppercase text-brand-burgundy font-bold mt-4">
-                          {item.total} {item.total === 1 ? "medalja" : item.total < 5 ? "medalje" : "medalj"} skupaj
+                          {total} {total === 1 ? "medalja" : total < 5 ? "medalje" : "medalj"} skupaj
                         </p>
                       </div>
                     </div>

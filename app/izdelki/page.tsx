@@ -4,63 +4,15 @@ import PageHeader from "@/components/page-header";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ScrollReveal from "@/components/scroll-reveal";
+import { sanityFetch } from "@/lib/sanity.live";
+import { productCategoriesQuery } from "@/lib/sanity.queries";
+import type { ProductCategory } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
   title: "Izdelki | Mesnice Fingušt",
   description:
     "Naša ponudba mesnih izdelkov — od svežega mesa do suhomesnatih specialitet.",
 };
-
-const categories = [
-  {
-    name: "Barjene klobase",
-    image: "/images/barjene-klobase.jpg",
-    description:
-      "Nežne in sočne barjene klobase, pripravljene po tradicionalni recepturi. Od klasičnih hrenovk do posebnih dunajskih klobas — idealne za hitro malico ali družinski obrok.",
-  },
-  {
-    name: "Poltrajne klobase",
-    image: "/images/poltrajne-klobase.jpg",
-    description:
-      "Skrbno začinjene in naravno prekajene poltrajne klobase z bogato aromo. Zorjene v naših kadilnicah, kjer se čas in dim združita v nepozaben okus.",
-  },
-  {
-    name: "Prekajeno meso",
-    image: "/images/prekajeno-meso.jpg",
-    description:
-      "Izbrano svinjsko in goveje meso, prekajeno nad bukovim dimom. Šunke, slanina in prekajena rebra — okusi, ki pričarajo spomine na domače kuhinje.",
-  },
-  {
-    name: "Konzervirano meso",
-    image: "/images/konzervirano-meso.jpg",
-    description:
-      "Domače paštete, mesne konzerve in namazki, pripravljeni iz svežih sestavin. Praktična izbira za vsak dan, brez kompromisov pri kakovosti.",
-  },
-  {
-    name: "Kuhane klobase",
-    image: "/images/kuhane-klobase.jpg",
-    description:
-      "Tradicionalne krvavice, jetrne klobase in tlačenka po starih štajerskih recepturah. Okusi, ki jih poznamo iz otroštva, ohranjeni z mojstrsko obdelavo.",
-  },
-  {
-    name: "Mast in maščobni izdelki",
-    image: "/images/mast-izdelki.jpg",
-    description:
-      "Čista svinjska mast in hrustljavi ocvirki — nepogrešljivi v domači kuhinji. Pripravljeni na tradicionalen način za avtentičen okus v vsakem obroku.",
-  },
-  {
-    name: "Sušene mesnine",
-    image: "/images/susene-mesnine.jpg",
-    description:
-      "Suhe salame, pršut in sušena govedina, ki zorijo v naravnih pogojih. Vsak kos je rezultat tedenske potrpežljivosti in generacij izkušenj.",
-  },
-  {
-    name: "Presne mesnine",
-    image: "/images/presne-mesnine.jpg",
-    description:
-      "Sveže mleto meso, domači čevapčiči in pripravljene mešanice za žar. Vsak dan sveže iz naše mesnice — pripravljeno za takojšnjo pripravo na vašem ognju.",
-  },
-];
 
 const revealTypes = [
   "reveal-left",
@@ -73,7 +25,8 @@ const revealTypes = [
   "reveal-right",
 ] as const;
 
-export default function IzdelkiPage() {
+export default async function IzdelkiPage() {
+  const { data: categories } = (await sanityFetch({ query: productCategoriesQuery })) as { data: ProductCategory[] };
   return (
     <>
       <Navbar />
@@ -112,15 +65,15 @@ export default function IzdelkiPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {categories.map((category, index) => (
             <ScrollReveal
-              key={category.name}
-              type={revealTypes[index]}
+              key={category._id}
+              type={revealTypes[index % revealTypes.length]}
               delay={index % 2 === 0 ? 0 : 150}
             >
               <a href="#kontakt" className="group block">
                 <div className="overflow-hidden rounded-sm mb-6">
                   <div className="aspect-[4/3] relative">
                     <Image
-                      src={category.image}
+                      src={category.imageUrl}
                       alt={category.name}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"

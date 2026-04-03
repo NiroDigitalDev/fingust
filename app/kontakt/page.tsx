@@ -4,37 +4,15 @@ import PageHeader from "@/components/page-header";
 import ScrollReveal from "@/components/scroll-reveal";
 import ContactForm from "@/components/contact-form";
 import Footer from "@/components/footer";
+import { sanityFetch } from "@/lib/sanity.live";
+import { contactDepartmentsQuery } from "@/lib/sanity.queries";
+import type { ContactDepartment } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
   title: "Kontakt | Mesnice Fingušt",
   description:
     "Stopite v stik z nami — kontaktni podatki in obrazec za povpraševanje.",
 };
-
-const departments = [
-  {
-    label: "Direkcija",
-    name: "Jože Fingušt",
-    phone: "02/80-37-398",
-    email: "mesnine@fingust.si",
-  },
-  {
-    label: "Računovodstvo",
-    name: "Marjana Fingušt",
-    phone: "02/80-39-150",
-    email: "fingust.pragersko@siol.net",
-  },
-  {
-    label: "Tehnologija",
-    name: "Tanja Fingušt, uni.dipl.ing.živ.teh. & Janja Fingušt, uni.dipl.ing.živ.teh.",
-    emails: ["tanja@fingust.si", "janja@fingust.si"],
-  },
-  {
-    label: "Veleprodaja",
-    phones: ["02/80-39-150", "02/80-37-302", "031/310-080"],
-    email: "fingust-narocila@siol.net",
-  },
-];
 
 function PhoneIcon() {
   return (
@@ -95,7 +73,9 @@ function MapPinIcon() {
   );
 }
 
-export default function KontaktPage() {
+export default async function KontaktPage() {
+  const { data: departments } = (await sanityFetch({ query: contactDepartmentsQuery })) as { data: ContactDepartment[] };
+
   return (
     <>
       <Navbar />
@@ -121,16 +101,23 @@ export default function KontaktPage() {
 
             <div className="space-y-0">
               {departments.map((dept, i) => (
-                <ScrollReveal key={dept.label} delay={i * 100}>
+                <ScrollReveal key={dept._id} delay={i * 100}>
                   <div className="border-t border-brand-charcoal/15 py-8">
                     <p className="text-xs tracking-[0.2em] uppercase font-bold text-brand-charcoal/50 mb-3">
-                      {dept.label}
+                      {dept.department}
                     </p>
-                    <p className="font-serif text-lg mb-4">{dept.name}</p>
+                    {dept.personName && (
+                      <p className="font-serif text-lg mb-4">
+                        {dept.personName}
+                        {dept.personTitle && (
+                          <span className="text-brand-charcoal/50 text-sm font-sans">, {dept.personTitle}</span>
+                        )}
+                      </p>
+                    )}
 
                     <div className="space-y-2">
-                      {/* Single phone */}
-                      {"phone" in dept && dept.phone && (
+                      {/* Primary phone */}
+                      {dept.phone && (
                         <div className="flex items-start gap-3 text-sm text-brand-charcoal/70">
                           <PhoneIcon />
                           <a
@@ -142,25 +129,24 @@ export default function KontaktPage() {
                         </div>
                       )}
 
-                      {/* Multiple phones */}
-                      {"phones" in dept &&
-                        dept.phones?.map((phone) => (
-                          <div
-                            key={phone}
-                            className="flex items-start gap-3 text-sm text-brand-charcoal/70"
+                      {/* Additional phones */}
+                      {dept.additionalPhones?.map((phone: string) => (
+                        <div
+                          key={phone}
+                          className="flex items-start gap-3 text-sm text-brand-charcoal/70"
+                        >
+                          <PhoneIcon />
+                          <a
+                            href={`tel:${phone.replace(/\//g, "").replace(/-/g, "")}`}
+                            className="hover:text-brand-burgundy transition-colors"
                           >
-                            <PhoneIcon />
-                            <a
-                              href={`tel:${phone.replace(/\//g, "").replace(/-/g, "")}`}
-                              className="hover:text-brand-burgundy transition-colors"
-                            >
-                              {phone}
-                            </a>
-                          </div>
-                        ))}
+                            {phone}
+                          </a>
+                        </div>
+                      ))}
 
-                      {/* Single email */}
-                      {"email" in dept && dept.email && (
+                      {/* Email */}
+                      {dept.email && (
                         <div className="flex items-start gap-3 text-sm text-brand-charcoal/70">
                           <EmailIcon />
                           <a
@@ -171,23 +157,6 @@ export default function KontaktPage() {
                           </a>
                         </div>
                       )}
-
-                      {/* Multiple emails */}
-                      {"emails" in dept &&
-                        dept.emails?.map((email) => (
-                          <div
-                            key={email}
-                            className="flex items-start gap-3 text-sm text-brand-charcoal/70"
-                          >
-                            <EmailIcon />
-                            <a
-                              href={`mailto:${email}`}
-                              className="hover:text-brand-burgundy transition-colors"
-                            >
-                              {email}
-                            </a>
-                          </div>
-                        ))}
                     </div>
                   </div>
                 </ScrollReveal>
