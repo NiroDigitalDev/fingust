@@ -1,65 +1,344 @@
 import Image from "next/image";
+import Navbar from "@/components/navbar";
+import ScrollReveal from "@/components/scroll-reveal";
+import ContactForm from "@/components/contact-form";
+import ParallaxBg from "@/components/parallax-bg";
+import Footer from "@/components/footer";
+
+const awards = [
+  "AAA Odličnost",
+  "Agra 2018 Nagrade",
+  "Eko Meso Certifikat",
+  "Sklad za razvoj podeželja",
+];
+
+function ArrowIcon() {
+  return (
+    <svg
+      className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
+    </svg>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <Navbar />
+
+      {/* ── Hero ── */}
+      <header className="relative min-h-screen flex items-center pt-24 pb-12 px-6 md:px-12 bg-brand-charcoal text-brand-cream overflow-hidden">
+        <ParallaxBg>
+          <Image
+            src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=2000&q=80"
+            alt="Butchery Art"
+            fill
+            className="object-cover opacity-40"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-charcoal/30 via-transparent to-brand-charcoal" />
+        </ParallaxBg>
+
+        <div className="relative z-10 w-full max-w-screen-2xl mx-auto flex flex-col justify-end h-full mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+            <div className="md:col-span-8">
+              <ScrollReveal>
+                <p className="text-brand-sand tracking-[0.3em] uppercase text-xs mb-6 font-medium">
+                  Mesnine štajerske d.o.o.
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={150}>
+                <h1 className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-serif mb-4">
+                  Čista
+                </h1>
+              </ScrollReveal>
+              <ScrollReveal delay={300}>
+                <h1 className="text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] font-serif mb-4 italic text-brand-burgundy">
+                  tradicija.
+                </h1>
+              </ScrollReveal>
+            </div>
+            <ScrollReveal
+              type="reveal-left"
+              className="md:col-span-4 pb-4 md:pb-8"
+              delay={500}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <p className="text-lg md:text-xl font-light text-brand-sand/80 max-w-md border-l border-brand-burgundy pl-6">
+                Skrbno izbrano, varno in visoko kakovostno domače slovensko
+                meso, obdelano z ljubeznijo od leta 2013.
+              </p>
+            </ScrollReveal>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Marquee Awards Bar ── */}
+      <section className="bg-brand-burgundy text-brand-cream py-5 border-y border-brand-charcoal relative z-20">
+        <div className="marquee-wrapper">
+          {[0, 1].map((i) => (
+            <div
+              key={i}
+              className="animate-marquee flex space-x-12 items-center px-6"
+              aria-hidden={i === 1 ? true : undefined}
             >
-              Learning
-            </a>{" "}
-            center.
+              {awards.map((award) => (
+                <span
+                  key={`${i}-${award}`}
+                  className="text-sm tracking-[0.2em] uppercase whitespace-nowrap flex items-center"
+                >
+                  <span className="w-1.5 h-1.5 bg-brand-sand rounded-full mr-4" />
+                  {award}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Products ── */}
+      <section
+        id="izdelki"
+        className="py-32 px-6 md:px-12 max-w-screen-2xl mx-auto"
+      >
+        <ScrollReveal className="mb-24">
+          <p className="text-brand-burgundy tracking-[0.2em] uppercase text-xs mb-4 font-bold">
+            Kolekcija
           </p>
+          <h2 className="text-5xl md:text-7xl font-serif">Naši Izdelki.</h2>
+        </ScrollReveal>
+
+        <div className="space-y-32">
+          {/* Product 1 — text left, image right */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            <ScrollReveal
+              type="reveal-left"
+              className="md:col-span-5 md:col-start-2 order-2 md:order-1"
+            >
+              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                01
+              </span>
+              <h3 className="text-4xl font-serif mb-6">Sveže meso</h3>
+              <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
+                Vrhunsko lokalno meso, pridelano na naraven način. Naša
+                govedina, svinjina in perutnina so skrbno izbrane za popoln okus
+                na vaši mizi.
+              </p>
+              <a
+                href="#kontakt"
+                className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
+              >
+                Odkrijte več
+                <ArrowIcon />
+              </a>
+            </ScrollReveal>
+            <ScrollReveal
+              type="reveal-right"
+              className="md:col-span-6 order-1 md:order-2"
+              delay={200}
+            >
+              <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
+                <Image
+                  src="/images/sveze-meso.jpg"
+                  alt="Sveže meso"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover hover:scale-105 transition-transform duration-1000"
+                />
+              </div>
+            </ScrollReveal>
+          </div>
+
+          {/* Product 2 — image left, text right */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            <ScrollReveal
+              type="reveal-left"
+              className="md:col-span-6"
+              delay={100}
+            >
+              <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden relative rounded-sm">
+                <Image
+                  src="/images/suhomesnato.jpg"
+                  alt="Suhomesnati izdelki"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover hover:scale-105 transition-transform duration-1000"
+                />
+              </div>
+            </ScrollReveal>
+            <ScrollReveal
+              type="reveal-right"
+              className="md:col-span-5 md:col-start-8"
+              delay={300}
+            >
+              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                02
+              </span>
+              <h3 className="text-4xl font-serif mb-6">Suhomesnato</h3>
+              <p className="text-brand-charcoal/70 font-light text-lg mb-8 leading-relaxed max-w-md">
+                Nagrajene salame, klobase in pršuti, ki zorijo z navdihom
+                narave. Ustvarjeno po starih družinskih recepturah za trenutke,
+                ki se jih spominjamo.
+              </p>
+              <a
+                href="#kontakt"
+                className="group inline-flex items-center whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
+              >
+                Odkrijte več
+                <ArrowIcon />
+              </a>
+            </ScrollReveal>
+          </div>
+
+          {/* Product 3 — center feature */}
+          <div>
+            <ScrollReveal className="text-center mb-12">
+              <span className="text-6xl font-serif text-brand-sand block mb-4 italic">
+                03
+              </span>
+              <h3 className="text-4xl font-serif mb-4">Žar Program</h3>
+              <p className="text-brand-charcoal/70 font-light text-lg max-w-xl mx-auto">
+                Specialitete, zasnovane za ogenj. Od sočnih čevapčičev do skrbno
+                mariniranih kosov za vrhunske kulinarične dogodke na prostem.
+              </p>
+            </ScrollReveal>
+            <ScrollReveal type="reveal-scale" delay={150}>
+              <div className="w-full aspect-video md:aspect-[21/9] overflow-hidden max-w-6xl mx-auto relative rounded-sm">
+                <Image
+                  src="/images/zar-program.jpg"
+                  alt="Žar"
+                  fill
+                  sizes="100vw"
+                  className="object-cover hover:scale-105 transition-transform duration-1000"
+                />
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* ── About / Quality ── */}
+      <section
+        id="kakovost"
+        className="py-32 bg-brand-charcoal text-brand-cream relative"
+      >
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-7">
+              <ScrollReveal>
+                <h2 className="text-5xl md:text-7xl font-serif leading-tight mb-12">
+                  Ponosni na našo <br />
+                  <span className="italic text-brand-burgundy">kakovost</span>.
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 border-t border-brand-cream/20 pt-12">
+                  <div>
+                    <h4 className="text-xs tracking-[0.2em] uppercase font-bold text-brand-sand mb-4">
+                      Inovacija
+                    </h4>
+                    <p className="font-light text-brand-cream/70 leading-relaxed text-sm">
+                      Z uspešno rekonstrukcijo objektov in nabavo posodobljene
+                      tehnološke opreme zagotavljamo najvišje standarde varnosti
+                      in higiene.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-xs tracking-[0.2em] uppercase font-bold text-brand-sand mb-4">
+                      Priznanja
+                    </h4>
+                    <p className="font-light text-brand-cream/70 leading-relaxed text-sm">
+                      Konstantno prisotni in nagrajeni na sejmu AGRA. Ponosni
+                      nosilci certifikata AAA Odličnosti.
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            <div className="lg:col-span-4 lg:col-start-9 relative mt-12 lg:mt-0">
+              <ScrollReveal type="reveal-right">
+                <div className="aspect-[3/4] overflow-hidden relative">
+                  <Image
+                    src="/images/butcher-portrait.jpg"
+                    alt="Butcher portrait"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    className="object-cover grayscale"
+                  />
+                </div>
+              </ScrollReveal>
+              <ScrollReveal type="reveal-rotate" delay={600}>
+                <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-brand-burgundy rounded-full flex items-center justify-center p-4 text-center shadow-2xl">
+                  <p className="font-serif text-sm italic leading-tight">
+                    Evropa <br />
+                    investira v <br />
+                    podeželje.
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* ── Locations & Contact ── */}
+      <section
+        id="poslovalnice"
+        className="py-32 px-6 md:px-12 max-w-screen-2xl mx-auto"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+          <ScrollReveal type="reveal-left">
+            <p className="text-brand-burgundy tracking-[0.2em] uppercase text-xs mb-4 font-bold">
+              Obiščite nas
+            </p>
+            <h2 className="text-4xl md:text-5xl font-serif mb-12">
+              Poslovalnica
+            </h2>
+            <div className="border-t border-brand-charcoal/20 pt-8 pb-8">
+              <h3 className="text-2xl font-serif mb-2">Glavna Mesnica</h3>
+              <p className="text-brand-charcoal/70 font-light leading-relaxed">
+                Mesnine štajerske d.o.o.
+                <br />
+                Spodnji gaj pri Pragerskem 9
+                <br />
+                2331 Pragersko
+              </p>
+              <a
+                href="https://maps.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-6 text-xs tracking-[0.2em] uppercase font-bold hover-underline-animation pb-1"
+              >
+                Prikaži na zemljevidu
+              </a>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal type="reveal-right" delay={200}>
+            <div id="kontakt">
+              <p className="text-brand-burgundy tracking-[0.2em] uppercase text-xs mb-4 font-bold">
+                Stopite v stik
+              </p>
+              <h2 className="text-4xl md:text-5xl font-serif mb-12">
+                Povpraševanje
+              </h2>
+              <ContactForm />
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <Footer />
+    </>
   );
 }
