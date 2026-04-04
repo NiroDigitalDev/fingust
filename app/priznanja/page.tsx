@@ -9,7 +9,7 @@ import { awardsQuery } from "@/lib/sanity.queries";
 import type { Award } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
-  title: "Priznanja in nagrade | Mesnice Fingušt",
+  title: "Priznanja in nagrade",
   description: "Naša priznanja in nagrade za kakovost mesnih izdelkov.",
 };
 

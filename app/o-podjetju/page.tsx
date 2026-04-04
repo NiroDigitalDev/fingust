@@ -10,7 +10,7 @@ import type { AboutPage } from "@/lib/sanity.types";
 import PortableText from "@/components/portable-text";
 
 export const metadata: Metadata = {
-  title: "O podjetju | Mesnice Fingušt",
+  title: "O podjetju",
   description:
     "Družinsko podjetje z več kot 35-letno tradicijo mesarstva.",
 };

@@ -9,7 +9,7 @@ import { productCategoriesQuery } from "@/lib/sanity.queries";
 import type { ProductCategory } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
-  title: "Izdelki | Mesnice Fingušt",
+  title: "Izdelki",
   description:
     "Naša ponudba mesnih izdelkov — od svežega mesa do suhomesnatih specialitet.",
 };

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import PageHeader from "@/components/page-header";
 import ScrollReveal from "@/components/scroll-reveal";
@@ -8,8 +9,8 @@ import { qualityPageQuery } from "@/lib/sanity.queries";
 import type { QualityPage } from "@/lib/sanity.types";
 import PortableText from "@/components/portable-text";
 
-export const metadata = {
-  title: "Kakovost | Mesnice Fingušt",
+export const metadata: Metadata = {
+  title: "Kakovost",
   description:
     "Zagotavljamo najvišje standarde varnosti in kakovosti z IFS in HACCP certifikati.",
 };

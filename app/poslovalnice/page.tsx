@@ -8,7 +8,7 @@ import { locationsQuery } from "@/lib/sanity.queries";
 import type { Location } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
-  title: "Poslovalnice | Mesnice Fingušt",
+  title: "Poslovalnice",
   description: "Šest mesnic v Štajerski regiji — obiščite nas.",
 };
 

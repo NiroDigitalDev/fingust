@@ -9,7 +9,7 @@ import { contactDepartmentsQuery } from "@/lib/sanity.queries";
 import type { ContactDepartment } from "@/lib/sanity.types";
 
 export const metadata: Metadata = {
-  title: "Kontakt | Mesnice Fingušt",
+  title: "Kontakt",
   description:
     "Stopite v stik z nami — kontaktni podatki in obrazec za povpraševanje.",
 };
