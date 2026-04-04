@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import ScrollReveal from "@/components/scroll-reveal";
 import ContactForm from "@/components/contact-form";
@@ -7,6 +8,12 @@ import Footer from "@/components/footer";
 import { sanityFetch } from "@/lib/sanity.live";
 import { homePageQuery, siteSettingsQuery } from "@/lib/sanity.queries";
 import type { HomePage, SiteSettings } from "@/lib/sanity.types";
+
+export const metadata: Metadata = {
+  title: "Sveže domače meso in suhomesnate specialitete",
+  description:
+    "Mesnice Fingušt - Mesnine štajerske d.o.o. Nudimo sveže domače meso, suhomesnate izdelke in žar program z garancijo kakovosti. 6 mesnic po Štajerski.",
+};
 
 const awards = [
   "AAA Odličnost",
