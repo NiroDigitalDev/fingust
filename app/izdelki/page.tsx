@@ -34,7 +34,7 @@ export default async function IzdelkiPage() {
       <PageHeader
         title="Naši Izdelki."
         subtitle="Mesnine štajerske d.o.o."
-        imageSrc="/images/sveze-meso.jpg"
+        imageSrc="/images/sveze-meso.webp"
       />
 
       {/* ── Slogan Bar ── */}

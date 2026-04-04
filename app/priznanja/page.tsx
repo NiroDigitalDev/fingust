@@ -63,7 +63,7 @@ export default async function PriznanjaPage() {
       <PageHeader
         title="Priznanja in nagrade."
         subtitle="Dokazana odličnost"
-        imageSrc="/images/priznanja-medals.jpg"
+        imageSrc="/images/priznanja-medals.webp"
       />
 
       {/* ── Stats Bar ── */}
@@ -337,7 +337,7 @@ export default async function PriznanjaPage() {
         <ScrollReveal type="reveal-scale" delay={150}>
           <div className="max-w-4xl mx-auto aspect-[3/4] overflow-hidden relative rounded-sm">
             <Image
-              src="/images/priznanja-agra.jpg"
+              src="/images/priznanja-agra.webp"
               alt="Sejem AGRA — razstava mesnih izdelkov"
               fill
               sizes="(max-width: 768px) 100vw, 800px"

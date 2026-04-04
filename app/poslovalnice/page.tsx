@@ -98,7 +98,7 @@ export default async function PoslovalnicePage() {
       <PageHeader
         title="Naše poslovalnice."
         subtitle="6 mesnic v Štajerski"
-        imageSrc="/images/poslovalnica-storefront.jpg"
+        imageSrc="/images/poslovalnica-storefront.webp"
       />
 
       {/* ── Intro ── */}

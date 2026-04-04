@@ -38,7 +38,7 @@ export default async function KakovostPage() {
       <PageHeader
         title={page?.heroTitle ?? "Kakovost brez kompromisov."}
         subtitle={page?.heroSubtitle ?? "Standardi odličnosti"}
-        imageSrc="/images/kakovost-facility.jpg"
+        imageSrc="/images/kakovost-facility.webp"
       />
 
       {/* ── Intro ── */}
@@ -271,7 +271,7 @@ export default async function KakovostPage() {
             >
               <div className="aspect-[3/4] overflow-hidden relative rounded-sm">
                 <Image
-                  src="/images/kakovost-inspection.jpg"
+                  src="/images/kakovost-inspection.webp"
                   alt="Kontrola kakovosti mesnih izdelkov"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"

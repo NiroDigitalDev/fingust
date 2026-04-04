@@ -83,7 +83,7 @@ export default async function KontaktPage() {
       <PageHeader
         title="Stopite v stik."
         subtitle="Kontakt"
-        imageSrc="/images/butcher-portrait.jpg"
+        imageSrc="/images/butcher-portrait.webp"
       />
 
       <section className="py-24 md:py-32 px-6 md:px-12 max-w-screen-2xl mx-auto">

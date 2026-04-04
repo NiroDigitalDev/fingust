@@ -63,7 +63,7 @@ export default async function OPodjetjuPage() {
       <PageHeader
         title={page?.heroTitle ?? "Naša zgodba."}
         subtitle={page?.heroSubtitle ?? "Od leta 1988"}
-        imageSrc="/images/podjetje-zgodovina.jpg"
+        imageSrc="/images/podjetje-zgodovina.webp"
       />
 
       {/* ── History / Timeline ── */}
@@ -182,7 +182,7 @@ export default async function OPodjetjuPage() {
               <ScrollReveal type="reveal-scale" delay={200}>
                 <div className="aspect-[3/4] overflow-hidden relative rounded-sm">
                   <Image
-                    src="/images/podjetje-team.jpg"
+                    src="/images/podjetje-team.webp"
                     alt="Ekipa v proizvodnem obratu"
                     fill
                     sizes="(max-width: 1024px) 100vw, 42vw"
@@ -210,7 +210,7 @@ export default async function OPodjetjuPage() {
           <ScrollReveal type="reveal-left" className="lg:col-span-6" delay={100}>
             <div className="aspect-[4/3] overflow-hidden relative rounded-sm">
               <Image
-                src="/images/podjetje-dostava.jpg"
+                src="/images/podjetje-dostava.webp"
                 alt="Dostava mesnih izdelkov"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

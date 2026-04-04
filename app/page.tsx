@@ -20,19 +20,19 @@ const defaultProducts = [
     title: "Sveže meso",
     description:
       "Vrhunsko lokalno meso, pridelano na naraven način. Naša govedina, svinjina in perutnina so skrbno izbrane za popoln okus na vaši mizi.",
-    imageUrl: "/images/sveze-meso.jpg",
+    imageUrl: "/images/sveze-meso.webp",
   },
   {
     title: "Suhomesnato",
     description:
       "Nagrajene salame, klobase in pršuti, ki zorijo z navdihom narave. Ustvarjeno po starih družinskih recepturah za trenutke, ki se jih spominjamo.",
-    imageUrl: "/images/suhomesnato.jpg",
+    imageUrl: "/images/suhomesnato.webp",
   },
   {
     title: "Žar Program",
     description:
       "Specialitete, zasnovane za ogenj. Od sočnih čevapčičev do skrbno mariniranih kosov za vrhunske kulinarične dogodke na prostem.",
-    imageUrl: "/images/zar-program.jpg",
+    imageUrl: "/images/zar-program.webp",
   },
 ];
 
@@ -171,7 +171,7 @@ export default async function Home() {
           {products.map((product, index) => {
             const number = String(index + 1).padStart(2, "0");
             const imageSrc =
-              product.imageUrl ?? defaultProducts[index]?.imageUrl ?? "/images/sveze-meso.jpg";
+              product.imageUrl ?? defaultProducts[index]?.imageUrl ?? "/images/sveze-meso.webp";
 
             // Product layout 1 — text left, image right
             if (index % 3 === 0) {
@@ -339,7 +339,7 @@ export default async function Home() {
               <ScrollReveal type="reveal-right">
                 <div className="aspect-[3/4] overflow-hidden relative">
                   <Image
-                    src={page?.aboutImageUrl ?? "/images/butcher-portrait.jpg"}
+                    src={page?.aboutImageUrl ?? "/images/butcher-portrait.webp"}
                     alt="Butcher portrait"
                     fill
                     sizes="(max-width: 1024px) 100vw, 33vw"
