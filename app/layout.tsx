@@ -3,6 +3,7 @@ import { Outfit, Playfair_Display } from "next/font/google";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/lib/sanity.live";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -72,6 +73,7 @@ export default async function RootLayout({
         {children}
         {isDraftMode && <VisualEditing />}
         <SanityLive />
+        <Analytics />
       </body>
     </html>
   );
